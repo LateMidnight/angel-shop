@@ -1,0 +1,10 @@
+.env
+.data/
+__pycache__/
+dist/
+ANGEL-public.zip
+codex-screen.png
+*.db
+*.db-journal
+*.sqlite-shm
+*.sqlite-wal
