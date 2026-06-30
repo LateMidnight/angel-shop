@@ -4,6 +4,14 @@ __pycache__/
 dist/
 ANGEL-public.zip
 codex-screen.png
+gh-login*.log
+.dockerignore
+.env.example
+Caddyfile
+DEPLOY.md
+Dockerfile
+compose.yaml
+server.py
 *.db
 *.db-journal
 *.sqlite-shm
