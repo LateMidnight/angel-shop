@@ -5,6 +5,7 @@ dist/
 ANGEL-public.zip
 codex-screen.png
 gh-login*.log
+netlify-login*.log
 .dockerignore
 .env.example
 Caddyfile
@@ -16,3 +17,6 @@ server.py
 *.db-journal
 *.sqlite-shm
 *.sqlite-wal
+
+# Local Netlify folder
+.netlify
