@@ -260,7 +260,7 @@ function renderPayment() {
         <p><strong>订单号：</strong><span id="paymentOrderNumber">${escapeHtml(order.id)}</span></p>
         <p><strong>收件人：</strong>${escapeHtml(order.customer.name)}</p>
         <p><strong>应付金额：</strong>${money(order.total)}</p>
-        <p><strong>付款备注：</strong>${escapeHtml(paymentNote)}</p>
+        <p><strong>邮件内容：</strong>${escapeHtml(paymentNote)}</p>
       </div>
     `
     : `
@@ -287,8 +287,8 @@ function renderPayment() {
           ${orderDetails}
           <ol>
             <li>请核对应付金额后再扫码付款。</li>
-            <li>付款备注请填写“订单号 + 商品名称和数量 + 收件人姓名 + 联系电话 + 完整收货地址”。</li>
-            <li>请认真核对备注内容，确保商品和收货信息完整无误。</li>
+            <li>付款后，请将“订单号 + 商品名称和数量 + 收件人姓名 + 联系电话 + 完整收货地址”发送至邮箱 verawang324@gmail.com。</li>
+            <li>请认真核对邮件内容，确保商品和收货信息完整无误。</li>
             <li>付款后请保留支付截图，方便需要时核对。</li>
           </ol>
         </div>
