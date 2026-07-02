@@ -446,12 +446,10 @@ h1 {
   font-size: clamp(30px, 6vw, 48px);
 }
 
-.story-section,
 .stories-page {
   margin-top: 34px;
 }
 
-.story-heading,
 .story-meta {
   display: flex;
   align-items: center;
@@ -459,11 +457,6 @@ h1 {
   gap: 16px;
 }
 
-.story-heading {
-  margin-bottom: 16px;
-}
-
-.story-heading h2,
 .stories-intro h1 {
   margin: 4px 0 0;
   color: var(--pink-deep);
@@ -472,7 +465,6 @@ h1 {
   text-shadow: 1px 2px 0 #d8efff;
 }
 
-.story-heading > span,
 .story-meta span {
   color: var(--blue-deep);
   font-weight: 900;
@@ -503,14 +495,6 @@ h1 {
 .story-body {
   color: var(--ink);
   line-height: 1.9;
-}
-
-.story-more {
-  display: block;
-  min-height: 48px;
-  margin: 14px 0 0 auto;
-  color: var(--pink-deep);
-  font-weight: 900;
 }
 
 .stories-intro {

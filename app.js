@@ -144,7 +144,6 @@ function productCard(product) {
 }
 
 function renderHome() {
-  const latestStory = dailyStories[0];
   app.innerHTML = `
     <section class="hero">
       <div class="hero-banner">
@@ -158,35 +157,10 @@ function renderHome() {
       </div>
     </section>
 
-    <section class="story-section">
-      <div class="story-heading">
-        <div>
-          <p class="eyebrow">Daily Story</p>
-          <h2>每日故事</h2>
-        </div>
-        <span>不定期更新</span>
-      </div>
-      ${latestStory ? storyCard(latestStory) : ""}
-      <button class="story-more" data-view="stories">进入故事栏目</button>
-    </section>
-
     <section class="about-band">
       <h2>ABOUT US</h2>
       <p>ANGEL 是一个收藏柔软心事的小店，主打棉花娃娃、娃娃服装与娃娃用品，也会慢慢上新可爱的文创小物。我们希望每一件小东西都像送给自己的礼物，带一点甜、一点陪伴，也带一点认真生活的仪式感。</p>
     </section>
-  `;
-}
-
-function storyCard(story) {
-  return `
-    <article class="story-card">
-      <div class="story-meta">
-        <span>${escapeHtml(story.ip)}</span>
-        <time>${escapeHtml(story.date)}</time>
-      </div>
-      <h3>${escapeHtml(story.title)}</h3>
-      <p>${escapeHtml(story.excerpt)}</p>
-    </article>
   `;
 }
 
