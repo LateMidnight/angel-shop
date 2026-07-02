@@ -9,7 +9,34 @@ const categories = [
   { id: "文创", label: "文创", icon: "✦" },
 ];
 
-const products = [];
+const products = [
+  {
+    id: "with-sun-earth-pajamas",
+    name: "WITH太阳地球款娃娃睡衣",
+    category: "银河放学后",
+    status: "预售",
+    price: null,
+    setPrice: null,
+    imageUrl: "assets/with-cover.png",
+    images: [
+      { src: "assets/with-cover.png", alt: "WITH太阳地球款娃娃睡衣咖啡店场景封面" },
+      { src: "assets/with-lifestyle-1.png", alt: "太阳款与地球款娃娃睡衣夜晚听歌场景" },
+      { src: "assets/with-lifestyle-2.png", alt: "太阳款与地球款娃娃睡衣床上阅读场景" },
+      { src: "assets/with-fabric.png", alt: "太阳款睡衣柔软面料与星星印花细节" },
+      { src: "assets/with-craft.png", alt: "太阳地球款睡衣领口袖口刺绣与裙摆细节" },
+      { src: "assets/with-fit-guide.png", alt: "太阳款与地球款娃娃睡衣正侧背面展示" },
+    ],
+    description:
+      "把放学后的天空穿在娃娃身上。暖黄色太阳款像一盏留到深夜的小灯，云蓝色地球款则把星星、云朵和小小地球收进柔软的睡衣里。两种颜色一暖一凉，单独穿可爱，放在一起又像彼此陪伴的昼与夜。",
+    details: [
+      "太阳暖黄与地球云蓝两款可选",
+      "长款睡衣搭配同主题睡帽，整体造型完整",
+      "翻领、袖口、纽扣、刺绣与裙摆褶边均有细节设计",
+      "精选柔软棉布，亲肤透气，手感舒适",
+      "适配尺寸与最终包含内容将在正式预售说明中确认",
+    ],
+  },
+];
 
 const shippingFee = 10;
 const PAYMENT_QR_URL = "assets/payment-qr.png";
@@ -19,6 +46,8 @@ const state = {
   search: "",
   cart: load("angel_cart", []),
   lastOrder: load("angel_last_order", null),
+  selectedProductId: null,
+  selectedProductImage: 0,
 };
 
 const app = document.querySelector("#app");
@@ -81,7 +110,8 @@ function cartQuantity() {
 }
 
 function addToCart(id) {
-  if (!products.some((product) => String(product.id) === String(id))) return;
+  const product = products.find((entry) => String(entry.id) === String(id));
+  if (!product || !Number.isFinite(product.price)) return;
   const found = state.cart.find((line) => String(line.id) === String(id));
   if (found) {
     found.qty += 1;
@@ -127,15 +157,24 @@ function productCard(product) {
   const art = product.imageUrl
     ? `<img class="product-image" src="${escapeHtml(product.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy" />`
     : `<div class="product-art" style="--art-a:#bfe3ff;--art-b:#ffd3e9">🎀</div>`;
+  const price = Number.isFinite(product.price) ? money(product.price) : "预售价待定";
+  const action = Number.isFinite(product.price)
+    ? `<button class="round-add" data-add="${escapeHtml(product.id)}" aria-label="加入购物车">🛒</button>`
+    : `<button class="detail-link" data-product="${escapeHtml(product.id)}">查看详情</button>`;
   return `
     <article class="product-card">
-      ${art}
+      <button class="product-card-image" data-product="${escapeHtml(product.id)}" aria-label="查看${escapeHtml(product.name)}详情">
+        ${art}
+      </button>
       <div class="product-info">
-        <span class="eyebrow">${escapeHtml(productCategoryLabel(product))}</span>
+        <div class="product-card-labels">
+          <span class="eyebrow">${escapeHtml(productCategoryLabel(product))}</span>
+          <span class="preorder-tag">${escapeHtml(product.status)}</span>
+        </div>
         <h3>${escapeHtml(product.name)}</h3>
         <div class="product-meta">
-          <span class="price">${money(product.price)}</span>
-          <button class="round-add" data-add="${escapeHtml(product.id)}" aria-label="加入购物车">🛒</button>
+          <span class="price">${price}</span>
+          ${action}
         </div>
       </div>
     </article>
@@ -190,7 +229,7 @@ function renderShop() {
     .join("");
   const listing = products.length
     ? activeProducts.length
-      ? `<div class="product-grid">${activeProducts.map(productCard).join("")}</div>`
+      ? `<div class="product-grid ${activeProducts.length === 1 ? "single-product" : ""}">${activeProducts.map(productCard).join("")}</div>`
       : `<div class="empty-state"><p>没有找到这个商品，换个关键词试试看。</p></div>`
     : `<p class="shop-note">商品会在准备好后陆续发布。</p>`;
   app.innerHTML = `
@@ -207,6 +246,61 @@ function renderShop() {
         </div>
       </div>
       ${listing}
+    </section>
+  `;
+}
+
+function renderProduct() {
+  const product = products.find((entry) => String(entry.id) === String(state.selectedProductId));
+  if (!product) {
+    state.view = "shop";
+    renderShop();
+    return;
+  }
+  const image = product.images[state.selectedProductImage] || product.images[0];
+  app.innerHTML = `
+    <section class="product-detail-page">
+      <button class="back-button" data-view="shop">← 返回商品</button>
+      <div class="product-detail-layout">
+        <div class="product-gallery">
+          <img class="product-gallery-main" src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" />
+          <div class="product-thumbnails" aria-label="商品图片">
+            ${product.images
+              .map(
+                (item, index) => `
+                  <button class="${index === state.selectedProductImage ? "active" : ""}" data-gallery-index="${index}" aria-label="查看第${index + 1}张商品图">
+                    <img src="${escapeHtml(item.src)}" alt="" />
+                  </button>
+                `,
+              )
+              .join("")}
+          </div>
+        </div>
+        <div class="product-detail-copy">
+          <div class="product-detail-labels">
+            <span class="eyebrow">${escapeHtml(product.category)}</span>
+            <span class="preorder-tag">${escapeHtml(product.status)}</span>
+          </div>
+          <h1>${escapeHtml(product.name)}</h1>
+          <p class="product-description">${escapeHtml(product.description)}</p>
+          <dl class="product-pricing">
+            <div>
+              <dt>单价</dt>
+              <dd>${Number.isFinite(product.price) ? money(product.price) : "待定"}</dd>
+            </div>
+            <div>
+              <dt>太阳 + 地球套装总价</dt>
+              <dd>${Number.isFinite(product.setPrice) ? money(product.setPrice) : "待定"}</dd>
+            </div>
+          </dl>
+          <div class="product-highlights">
+            <h2>产品亮点</h2>
+            <ul>${product.details.map((detail) => `<li>${escapeHtml(detail)}</li>`).join("")}</ul>
+          </div>
+          <p class="preorder-note">当前为预售展示，价格、适配尺寸和最终套装内容将在开放预订前公布。</p>
+          <button class="primary-button preorder-button" type="button" disabled>价格公布后开放预订</button>
+        </div>
+      </div>
     </section>
   `;
 }
@@ -353,6 +447,7 @@ async function submitGuestOrder(event) {
 function render() {
   if (state.view === "home") renderHome();
   if (state.view === "shop") renderShop();
+  if (state.view === "product") renderProduct();
   if (state.view === "payment") renderPayment();
   updateCartBadge();
 }
@@ -363,6 +458,19 @@ document.addEventListener("click", (event) => {
 
   const addButton = event.target.closest("[data-add]");
   if (addButton) addToCart(addButton.dataset.add);
+
+  const productButton = event.target.closest("[data-product]");
+  if (productButton) {
+    state.selectedProductId = productButton.dataset.product;
+    state.selectedProductImage = 0;
+    setView("product");
+  }
+
+  const galleryButton = event.target.closest("[data-gallery-index]");
+  if (galleryButton) {
+    state.selectedProductImage = Number(galleryButton.dataset.galleryIndex);
+    renderProduct();
+  }
 
   const filterButton = event.target.closest("[data-filter]");
   if (filterButton) {
