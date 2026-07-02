@@ -3,6 +3,7 @@ const SITE_NOTICE = {
 };
 
 const categories = [
+  { id: "银河放学后", label: "银河放学后", icon: "✦" },
   { id: "娃娃服装", label: "娃娃服装", icon: "🎀" },
   { id: "娃娃用品", label: "娃娃用品", icon: "🧸" },
   { id: "文创", label: "文创", icon: "✦" },
@@ -175,18 +176,18 @@ function filteredProducts() {
 }
 
 function renderShop() {
-  const liveCategories = [...new Set(products.map((product) => product.category).filter(Boolean))];
+  const liveCategories = products.length
+    ? [...new Set(products.map((product) => product.category).filter(Boolean))]
+    : ["银河放学后"];
   const activeProducts = filteredProducts();
-  const categoryButtons = products.length
-    ? liveCategories
-        .map(
-          (category) =>
-            `<button class="${state.category === category ? "active" : ""}" data-filter="${escapeHtml(category)}">${escapeHtml(
-              categories.find((entry) => entry.id === category)?.label || category,
-            )}</button>`,
-        )
-        .join("")
-    : "";
+  const categoryButtons = liveCategories
+    .map(
+      (category) =>
+        `<button class="${state.category === category ? "active" : ""}" data-filter="${escapeHtml(category)}">${escapeHtml(
+          categories.find((entry) => entry.id === category)?.label || category,
+        )}</button>`,
+    )
+    .join("");
   const listing = products.length
     ? activeProducts.length
       ? `<div class="product-grid">${activeProducts.map(productCard).join("")}</div>`
