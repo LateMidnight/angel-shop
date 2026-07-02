@@ -10,19 +10,7 @@ const categories = [
 
 const products = [];
 
-const dailyStories = [
-  {
-    id: "story-begins",
-    ip: "ANGEL",
-    date: "不定期更新",
-    title: "故事从这里开始",
-    excerpt: "每一个被认真喜欢的角色，都有自己的名字、性格和来处。这里收藏他们偶尔发生的小事，也珍惜故事之间安静的留白。",
-    body: [
-      "有些故事发生在晴天，有些故事藏在雨夜；也有一些，只是一件被记住的小事。",
-      "以后，这里会随着每个 IP 的背景慢慢长出新的篇章。故事不必每天出现，有新的心情与灵感时，我们就在这里见面。",
-    ],
-  },
-];
+const dailyStories = [];
 
 const shippingFee = 10;
 const PAYMENT_QR_URL = "assets/payment-qr.png";
@@ -178,8 +166,8 @@ function renderHome() {
         </div>
         <span>不定期更新</span>
       </div>
-      ${storyCard(latestStory)}
-      <button class="story-more" data-view="stories">读更多故事</button>
+      ${latestStory ? storyCard(latestStory) : ""}
+      <button class="story-more" data-view="stories">进入故事栏目</button>
     </section>
 
     <section class="about-band">
@@ -208,7 +196,7 @@ function renderStories() {
       <header class="stories-intro">
         <p class="eyebrow">Daily Story</p>
         <h1>每日故事</h1>
-        <p>沿着每个 IP 的背景，记录角色们偶尔发生的小事。这里不追赶日历，只在有新故事的时候见面。</p>
+        <p>沿着每个 IP 的背景，记录角色们偶尔发生的小事。</p>
       </header>
       <div class="story-list">
         ${dailyStories
