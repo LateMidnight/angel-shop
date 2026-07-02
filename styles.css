@@ -446,87 +446,6 @@ h1 {
   font-size: clamp(30px, 6vw, 48px);
 }
 
-.stories-page {
-  margin-top: 34px;
-}
-
-.story-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.stories-intro h1 {
-  margin: 4px 0 0;
-  color: var(--pink-deep);
-  font-size: clamp(34px, 7vw, 56px);
-  line-height: 1;
-  text-shadow: 1px 2px 0 #d8efff;
-}
-
-.story-meta span {
-  color: var(--blue-deep);
-  font-weight: 900;
-}
-
-.story-card {
-  padding: clamp(22px, 5vw, 38px);
-  border: 1px solid rgba(123, 185, 238, 0.34);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: var(--shadow);
-}
-
-.story-meta {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.story-card h3,
-.story-card h2 {
-  margin: 20px 0 12px;
-  color: #456fa5;
-  font-size: clamp(26px, 5vw, 42px);
-}
-
-.story-card > p,
-.story-lead,
-.story-body {
-  color: var(--ink);
-  line-height: 1.9;
-}
-
-.stories-intro {
-  max-width: 720px;
-  padding: 24px 0 30px;
-}
-
-.stories-intro > p:last-child {
-  margin-top: 18px;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.story-list {
-  display: grid;
-  gap: 18px;
-}
-
-.story-card-full {
-  border-left: 5px solid #91d2fb;
-}
-
-.story-body {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px dashed var(--pink);
-}
-
-.story-body p {
-  margin: 0 0 16px;
-}
-
 .shop-note {
   margin: 28px 0;
   color: var(--muted);
@@ -581,7 +500,7 @@ h1 {
   left: 14px;
   z-index: 30;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   max-width: 520px;
   margin: 0 auto;
@@ -598,7 +517,7 @@ h1 {
   gap: 2px;
   min-height: 48px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
 }
 

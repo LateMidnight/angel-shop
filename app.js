@@ -10,8 +10,6 @@ const categories = [
 
 const products = [];
 
-const dailyStories = [];
-
 const shippingFee = 10;
 const PAYMENT_QR_URL = "assets/payment-qr.png";
 const state = {
@@ -160,37 +158,6 @@ function renderHome() {
     <section class="about-band">
       <h2>ABOUT US</h2>
       <p>ANGEL 是一个收藏柔软心事的小店，主打棉花娃娃、娃娃服装与娃娃用品，也会慢慢上新可爱的文创小物。我们希望每一件小东西都像送给自己的礼物，带一点甜、一点陪伴，也带一点认真生活的仪式感。</p>
-    </section>
-  `;
-}
-
-function renderStories() {
-  app.innerHTML = `
-    <section class="stories-page">
-      <header class="stories-intro">
-        <p class="eyebrow">Daily Story</p>
-        <h1>每日故事</h1>
-        <p>沿着每个 IP 的背景，记录角色们偶尔发生的小事。</p>
-      </header>
-      <div class="story-list">
-        ${dailyStories
-          .map(
-            (story) => `
-              <article class="story-card story-card-full">
-                <div class="story-meta">
-                  <span>${escapeHtml(story.ip)}</span>
-                  <time>${escapeHtml(story.date)}</time>
-                </div>
-                <h2>${escapeHtml(story.title)}</h2>
-                <p class="story-lead">${escapeHtml(story.excerpt)}</p>
-                <div class="story-body">
-                  ${story.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
-                </div>
-              </article>
-            `,
-          )
-          .join("")}
-      </div>
     </section>
   `;
 }
@@ -384,7 +351,6 @@ async function submitGuestOrder(event) {
 
 function render() {
   if (state.view === "home") renderHome();
-  if (state.view === "stories") renderStories();
   if (state.view === "shop") renderShop();
   if (state.view === "payment") renderPayment();
   updateCartBadge();
