@@ -10,6 +10,20 @@ const categories = [
 
 const products = [];
 
+const dailyStories = [
+  {
+    id: "story-begins",
+    ip: "ANGEL",
+    date: "不定期更新",
+    title: "故事从这里开始",
+    excerpt: "每一个被认真喜欢的角色，都有自己的名字、性格和来处。这里收藏他们偶尔发生的小事，也珍惜故事之间安静的留白。",
+    body: [
+      "有些故事发生在晴天，有些故事藏在雨夜；也有一些，只是一件被记住的小事。",
+      "以后，这里会随着每个 IP 的背景慢慢长出新的篇章。故事不必每天出现，有新的心情与灵感时，我们就在这里见面。",
+    ],
+  },
+];
+
 const shippingFee = 10;
 const PAYMENT_QR_URL = "assets/payment-qr.png";
 const state = {
@@ -142,21 +156,7 @@ function productCard(product) {
 }
 
 function renderHome() {
-  const featured = products.slice(0, 4);
-  const listing = featured.length
-    ? `
-      <div class="section-heading">
-        <h2>新品可爱小物上线啦</h2>
-        <button class="soft-button" data-view="shop">查看全部</button>
-      </div>
-      <div class="product-grid">${featured.map(productCard).join("")}</div>
-    `
-    : `
-      <div class="empty-state listing-state">
-        <strong>正在上架</strong>
-        <span>ANGEL 小物很快就会补上来</span>
-      </div>
-    `;
+  const latestStory = dailyStories[0];
   app.innerHTML = `
     <section class="hero">
       <div class="hero-banner">
@@ -168,27 +168,67 @@ function renderHome() {
           <button class="primary-button" data-view="shop">立即选购</button>
         </div>
       </div>
-      <div class="category-strip updating-strip">
-        <button type="button" disabled>正在更新中</button>
-      </div>
     </section>
 
-    <section>
-      ${listing}
-    </section>
-
-    <section>
-      <div class="section-heading">
-        <h2>Collections</h2>
+    <section class="story-section">
+      <div class="story-heading">
+        <div>
+          <p class="eyebrow">Daily Story</p>
+          <h2>每日故事</h2>
+        </div>
+        <span>不定期更新</span>
       </div>
-      <div class="collection-grid single-collection">
-        <button class="collection-card" data-view="shop"><strong>娃娃服装 (˶ᵔ ᵕ ᵔ˶)</strong></button>
-      </div>
+      ${storyCard(latestStory)}
+      <button class="story-more" data-view="stories">读更多故事</button>
     </section>
 
     <section class="about-band">
       <h2>ABOUT US</h2>
       <p>ANGEL 是一个收藏柔软心事的小店，主打棉花娃娃、娃娃服装与娃娃用品，也会慢慢上新可爱的文创小物。我们希望每一件小东西都像送给自己的礼物，带一点甜、一点陪伴，也带一点认真生活的仪式感。</p>
+    </section>
+  `;
+}
+
+function storyCard(story) {
+  return `
+    <article class="story-card">
+      <div class="story-meta">
+        <span>${escapeHtml(story.ip)}</span>
+        <time>${escapeHtml(story.date)}</time>
+      </div>
+      <h3>${escapeHtml(story.title)}</h3>
+      <p>${escapeHtml(story.excerpt)}</p>
+    </article>
+  `;
+}
+
+function renderStories() {
+  app.innerHTML = `
+    <section class="stories-page">
+      <header class="stories-intro">
+        <p class="eyebrow">Daily Story</p>
+        <h1>每日故事</h1>
+        <p>沿着每个 IP 的背景，记录角色们偶尔发生的小事。这里不追赶日历，只在有新故事的时候见面。</p>
+      </header>
+      <div class="story-list">
+        ${dailyStories
+          .map(
+            (story) => `
+              <article class="story-card story-card-full">
+                <div class="story-meta">
+                  <span>${escapeHtml(story.ip)}</span>
+                  <time>${escapeHtml(story.date)}</time>
+                </div>
+                <h2>${escapeHtml(story.title)}</h2>
+                <p class="story-lead">${escapeHtml(story.excerpt)}</p>
+                <div class="story-body">
+                  ${story.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+                </div>
+              </article>
+            `,
+          )
+          .join("")}
+      </div>
     </section>
   `;
 }
@@ -217,17 +257,12 @@ function renderShop() {
             )}</button>`,
         )
         .join("")
-    : `<button class="updating-pill" type="button" disabled>正在更新中</button>`;
+    : "";
   const listing = products.length
     ? activeProducts.length
       ? `<div class="product-grid">${activeProducts.map(productCard).join("")}</div>`
       : `<div class="empty-state"><p>没有找到这个商品，换个关键词试试看。</p></div>`
-    : `
-      <div class="empty-state listing-state">
-        <strong>正在上架</strong>
-        <span>ANGEL 小物很快就会补上来</span>
-      </div>
-    `;
+    : `<p class="shop-note">商品会在准备好后陆续发布。</p>`;
   app.innerHTML = `
     <section>
       <div class="section-heading">
@@ -387,6 +422,7 @@ async function submitGuestOrder(event) {
 
 function render() {
   if (state.view === "home") renderHome();
+  if (state.view === "stories") renderStories();
   if (state.view === "shop") renderShop();
   if (state.view === "payment") renderPayment();
   updateCartBadge();
