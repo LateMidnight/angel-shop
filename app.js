@@ -38,6 +38,7 @@ const products = [
   },
 ];
 
+const shopVisibleProductIds = [];
 const shippingFee = 10;
 const PAYMENT_QR_URL = "assets/payment-qr.png";
 const state = {
@@ -204,6 +205,7 @@ function renderHome() {
 
 function filteredProducts() {
   return products.filter((product) => {
+    if (!shopVisibleProductIds.includes(product.id)) return false;
     const matchCategory = state.category === "all" || product.category === state.category;
     const keyword = state.search.trim().toLowerCase();
     const matchSearch =
@@ -215,9 +217,8 @@ function filteredProducts() {
 }
 
 function renderShop() {
-  const liveCategories = products.length
-    ? [...new Set(products.map((product) => product.category).filter(Boolean))]
-    : ["银河放学后"];
+  const visibleProducts = products.filter((product) => shopVisibleProductIds.includes(product.id));
+  const liveCategories = [...new Set(visibleProducts.map((product) => product.category).filter(Boolean))];
   const activeProducts = filteredProducts();
   const categoryButtons = liveCategories
     .map(
@@ -227,7 +228,7 @@ function renderShop() {
         )}</button>`,
     )
     .join("");
-  const listing = products.length
+  const listing = visibleProducts.length
     ? activeProducts.length
       ? `<div class="product-grid ${activeProducts.length === 1 ? "single-product" : ""}">${activeProducts.map(productCard).join("")}</div>`
       : `<div class="empty-state"><p>没有找到这个商品，换个关键词试试看。</p></div>`
