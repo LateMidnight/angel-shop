@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ANGEL Shop</title>
+    <link rel="stylesheet" href="styles.css?v=13" />
+  </head>
+  <body>
+    <div class="page-stripes" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <button class="icon-button" id="menuButton" aria-label="打开菜单">☰</button>
+      <button class="brand-button" data-view="home" aria-label="回到首页">
+        <span class="brand-mark">ANGEL</span>
+      </button>
+      <nav class="desktop-nav" aria-label="主要导航">
+        <button data-view="home">首页</button>
+        <button data-view="shop">商品</button>
+        <button data-view="payment">支付方式</button>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" id="searchButton" aria-label="搜索">⌕</button>
+        <button class="cart-button" id="cartButton" aria-label="购物车">
+          🛍
+          <span id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <aside class="drawer" id="drawer" aria-hidden="true">
+      <div class="drawer-panel">
+        <button class="icon-button drawer-close" id="closeDrawer" aria-label="关闭菜单">×</button>
+        <div class="drawer-brand">ANGEL Shop</div>
+        <button data-view="home">首页</button>
+        <button data-view="shop">所有商品</button>
+        <button data-view="payment">支付方式</button>
+      </div>
+    </aside>
+
+    <main id="app" tabindex="-1"></main>
+
+    <nav class="mobile-nav" aria-label="手机底部导航">
+      <button data-view="home"><span>⌂</span>首页</button>
+      <button data-view="shop"><span>▦</span>商品</button>
+      <button id="mobileCartButton"><span>🛍</span>购物车</button>
+      <button data-view="payment"><span>¥</span>支付方式</button>
+    </nav>
+
+    <div class="modal-backdrop" id="noticeModal" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+      <section class="notice-card">
+        <button class="icon-button modal-close" id="closeNotice" aria-label="关闭提示">×</button>
+        <p class="eyebrow">ANGEL Notice</p>
+        <h2 id="noticeTitle">欢迎来到 ANGEL 小店</h2>
+        <button class="primary-button" id="noticeAction">开始逛逛</button>
+      </section>
+    </div>
+
+    <div class="modal-backdrop hidden" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <section class="cart-card">
+        <button class="icon-button modal-close" id="closeCart" aria-label="关闭购物车">×</button>
+        <h2 id="cartTitle">甜心购物袋</h2>
+        <div id="cartItems"></div>
+        <div class="cart-summary">
+          <span>商品总额</span>
+          <strong id="cartSubtotal">¥0.00</strong>
+        </div>
+        <div class="cart-summary">
+          <span>运费</span>
+          <strong id="cartShipping">¥10.00</strong>
+        </div>
+        <button class="primary-button" id="checkoutButton">填写收货信息</button>
+      </section>
+    </div>
+
+    <div class="modal-backdrop hidden" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <form class="checkout-card" id="checkoutForm">
+        <button type="button" class="icon-button modal-close" id="closeCheckout" aria-label="关闭结算">×</button>
+        <p class="eyebrow">Guest Checkout</p>
+        <h2 id="checkoutTitle">填写收货信息</h2>
+        <p class="fine-print">无需注册帐号。请认真核对，店主会按照这里填写的信息安排发货。</p>
+        <label>
+          <span>收件人姓名</span>
+          <input id="customerName" autocomplete="name" maxlength="40" placeholder="请输入真实姓名" required />
+        </label>
+        <label>
+          <span>联系电话</span>
+          <input id="customerPhone" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="请输入可以联系到你的手机号" required />
+        </label>
+        <label>
+          <span>收货地址</span>
+          <textarea id="customerAddress" autocomplete="street-address" maxlength="300" rows="4" placeholder="省 / 市 / 区 / 街道 / 门牌号" required></textarea>
+        </label>
+        <label>
+          <span>订单备注（选填）</span>
+          <textarea id="customerNote" maxlength="200" rows="3" placeholder="娃娃尺寸、颜色偏好或其他需要说明的内容"></textarea>
+        </label>
+        <div class="cart-summary">
+          <span>应付合计</span>
+          <strong id="checkoutTotal">¥0.00</strong>
+        </div>
+        <button class="primary-button" type="submit">确认订单并前往付款</button>
+        <p class="fine-print">收货信息只用于生成订单邮件内容，不会由网站自动上传。</p>
+      </form>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js?v=22"></script>
+  </body>
+</html>
